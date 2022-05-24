@@ -2,31 +2,35 @@ package com.example.e_wallet;
 
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
+import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
+@Entity
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class UserCreateRequest {
+public class User {
 
-    @NotNull
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+
     private String name;
 
-    @NotNull
-    @Email
+    @Column(unique = true, nullable = false)
     private String email;
 
     private String phone;
 
-    @NotNull
     private String country;
 
-    @NotNull
+    @Column()
     private String nationalID;
 
     private String password;
@@ -34,14 +38,6 @@ public class UserCreateRequest {
     @CreationTimestamp
     private Date createdOn;
 
-    public User to(){
-        return User.builder()
-                .name(this.name)
-                .email(this.email)
-                .phone(this.phone)
-                .country(this.country)
-                .nationalID(this.nationalID)
-                .password(this.password)
-                .build();
-    }
+    @UpdateTimestamp
+    private Date updatedOn;
 }
