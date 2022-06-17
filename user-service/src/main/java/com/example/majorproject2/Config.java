@@ -1,5 +1,7 @@
-package com.example.e_wallet;
+package com.example.majorproject2;
 
+import org.apache.kafka.clients.producer.ProducerConfig;
+import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
@@ -7,18 +9,24 @@ import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.JdkSerializationRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
+import org.springframework.kafka.core.DefaultKafkaProducerFactory;
+import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.kafka.core.ProducerFactory;
+
+import java.util.Properties;
 
 @Configuration
 public class Config {
+
+    // Redis configs
+
     public JedisConnectionFactory getRedisFactory(){
         RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration(
-                "redis-18706.c212.ap-south-1-1.ec2.cloud.redislabs.com", 18706);
-        redisStandaloneConfiguration.setPassword("F1lu42k3nieD99ViIywMn51nynYLt95i");
-
+                "redis-12476.c89.us-east-1-3.ec2.cloud.redislabs.com", 12476
+        );
+        redisStandaloneConfiguration.setPassword("EDYLWiqGGLSBzi8vHAGANqWhX18QcJp5");
         JedisConnectionFactory jedisConnectionFactory = new JedisConnectionFactory(redisStandaloneConfiguration);
-
         jedisConnectionFactory.afterPropertiesSet();
-
         return jedisConnectionFactory;
     }
 
@@ -28,9 +36,27 @@ public class Config {
         redisTemplate.setValueSerializer(new JdkSerializationRedisSerializer());
         redisTemplate.setHashValueSerializer(new JdkSerializationRedisSerializer());
         redisTemplate.setKeySerializer(new StringRedisSerializer());
-
         redisTemplate.setConnectionFactory(getRedisFactory());
 
         return redisTemplate;
+    }
+
+    // Kafka configs
+
+    Properties getKafkaProperties(){
+        Properties properties = new Properties();
+        properties.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
+        properties.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
+        properties.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
+        return properties;
+    }
+
+    ProducerFactory<String, String> getProducerFactory(){
+        return new DefaultKafkaProducerFactory(getKafkaProperties());
+    }
+
+    @Bean
+    KafkaTemplate<String, String> getKafkaTemplate(){
+        return new KafkaTemplate(getProducerFactory());
     }
 }

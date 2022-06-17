@@ -1,4 +1,4 @@
-package com.example.e_wallet;
+package com.example.majorproject2;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

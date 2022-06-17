@@ -1,24 +1,24 @@
-package com.example.e_wallet;
+package com.example.majorproject2;
 
-import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
-import java.util.Date;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
-@Builder
+@AllArgsConstructor
 public class UserCreateRequest {
 
     @NotNull
     private String name;
 
-    @NotNull
     @Email
+    @NotNull
     private String email;
 
     private String phone;
@@ -31,17 +31,14 @@ public class UserCreateRequest {
 
     private String password;
 
-    @CreationTimestamp
-    private Date createdOn;
-
     public User to(){
         return User.builder()
-                .name(this.name)
-                .email(this.email)
-                .phone(this.phone)
-                .country(this.country)
-                .nationalID(this.nationalID)
-                .password(this.password)
+                .country(country)
+                .name(name)
+                .nationalID(nationalID)
+                .email(email)
+                .phone(phone)
+                .password(password)
                 .build();
     }
 }

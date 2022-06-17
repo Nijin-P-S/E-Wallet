@@ -1,43 +1,43 @@
-package com.example.e_wallet;
+package com.example.jbdl.majorproject2;
 
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotNull;
 import java.util.Date;
 
-@Entity
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
-public class User {
+@Entity
+public class Transaction {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    private String name;
-
     @Column(unique = true, nullable = false)
-    private String email;
+    private String transactionId;
 
-    private String phone;
+    @Enumerated(value = EnumType.STRING)
+    private TransactionStatus transactionStatus;
 
-    private String country;
+    private String txnMessage;
 
-    @Column()
-    private String nationalID;
+    private String sender;
+    private String receiver;
 
-    private String password;
+    private double amount;
 
     @CreationTimestamp
     private Date createdOn;
 
     @UpdateTimestamp
     private Date updatedOn;
+
+    private boolean senderNotified;
+
 }
